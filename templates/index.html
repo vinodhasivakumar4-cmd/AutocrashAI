@@ -1,0 +1,430 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrashAI - Android Crash Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .user-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .logout-form {
+            display: inline-flex;
+            margin: 0;
+        }
+
+        .logout-btn {
+            width: auto;
+            margin: 0;
+            padding: 9px 14px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        @media (max-width: 760px) {
+            .navbar {
+                height: auto;
+                flex-wrap: wrap;
+                padding: 14px 4%;
+                gap: 14px;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 18px;
+            }
+
+            .nav-links a {
+                padding: 8px 0;
+            }
+
+            .nav-right {
+                margin-left: auto;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <span>Crash<span class="brand-ai">AI</span></span>
+    </div>
+
+    <div class="nav-links">
+        <a class="active" href="#">⌂ Home</a>
+        <a href="#analysis">⚙ Analysis</a>
+        <a href="#about">ⓘ About</a>
+        <a href="#help">? Help</a>
+    </div>
+
+    <div class="nav-right">
+        <span>Android Crash Analysis</span>
+        <span class="user-name">{{ current_user.username }}</span>
+        <form method="POST" action="{{ url_for('logout') }}" class="logout-form">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<main class="container">
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="ai-badge">✦ AI POWERED</div>
+
+            <h1>Crash<span>AI</span></h1>
+
+            <h2>
+                Symbolic Validation Framework for Reliable
+                <br>
+                Android Crash Reproduction
+            </h2>
+
+            <p>
+                Upload your Android APK and crash report.
+                Get detailed crash analysis, root cause,
+                reproduction steps and validation results.
+            </p>
+
+            <div class="hero-features">
+                <div>⚡ <span>Smart Analysis</span></div>
+                <div>🛡 <span>Reliable Results</span></div>
+                <div>🎯 <span>Better Apps</span></div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="circle circle-one"></div>
+            <div class="circle circle-two"></div>
+
+            <div class="phone">
+                <div class="phone-top"></div>
+                <div class="android">🤖</div>
+                <div class="warning">!</div>
+                <div class="phone-line"></div>
+            </div>
+
+            <div class="floating-card ai-card">✦ AI</div>
+            <div class="floating-card code-card">&lt;/&gt;</div>
+
+            <div class="check-card">
+                <div>✓ Analyze Crash</div>
+                <div>✓ Find Root Cause</div>
+                <div>✓ Get Reproduction Steps</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="upload-section" id="analysis">
+        <div class="section-heading">
+            <div class="heading-icon">⌁</div>
+            <div>
+                <h2>Upload Files</h2>
+                <p>Upload your Android APK and crash report to start the analysis.</p>
+            </div>
+        </div>
+
+        <form id="uploadForm">
+            <div class="upload-grid">
+
+                <div class="file-box">
+                    <div class="file-title">
+                        <div class="file-icon apk-icon">🤖</div>
+                        <div>
+                            <h3>Android APK</h3>
+                            <p>.apk file only</p>
+                        </div>
+                    </div>
+
+                    <label class="file-input">
+                        <span>📤 Choose APK file</span>
+                        <input type="file" id="apk" name="apk" accept=".apk" required>
+                        <small id="apkName">No file chosen</small>
+                    </label>
+                </div>
+
+                <div class="file-box">
+                    <div class="file-title">
+                        <div class="file-icon report-icon">📄</div>
+                        <div>
+                            <h3>Crash Report</h3>
+                            <p>.txt, .log or .xml file</p>
+                        </div>
+                    </div>
+
+                    <label class="file-input">
+                        <span>📤 Choose text file</span>
+                        <input type="file" id="crash_report" name="crash_report"
+                               accept=".txt,.log,.xml" required>
+                        <small id="reportName">No file chosen</small>
+                    </label>
+                </div>
+
+                <div class="analyze-box">
+                    <button type="submit" class="analyze-btn">
+                        <span>⌕</span>
+                        Analyze Crash
+                        <strong>→</strong>
+                    </button>
+                    <p>🛡 Your files are processed securely</p>
+                </div>
+
+            </div>
+        </form>
+
+        <div id="loading">
+            <div class="loader"></div>
+            <span>AI is analyzing your crash report...</span>
+        </div>
+    </section>
+
+    <section class="results-section" id="results">
+        <div class="results-heading">
+            <div class="results-title">
+                <div class="heading-icon">📊</div>
+                <div>
+                    <h2>Crash Analysis Results</h2>
+                    <p>AI-powered analysis and validation results</p>
+                </div>
+            </div>
+
+            <div class="ready-badge">● Ready for analysis</div>
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-card purple">
+                <div class="summary-icon">📱</div>
+                <div>
+                    <span>APK</span>
+                    <strong id="apkResult">-</strong>
+                    <small>Application package</small>
+                </div>
+            </div>
+
+            <div class="summary-card blue">
+                <div class="summary-icon">☷</div>
+                <div>
+                    <span>Crash Type</span>
+                    <strong id="crashType">-</strong>
+                    <small>Exception type</small>
+                </div>
+            </div>
+
+            <div class="summary-card red">
+                <div class="summary-icon">⚠</div>
+                <div>
+                    <span>Reason</span>
+                    <strong id="reason">-</strong>
+                    <small>Why it happened</small>
+                </div>
+            </div>
+
+            <div class="summary-card green">
+                <div class="summary-icon">⚡</div>
+                <div>
+                    <span>Trigger</span>
+                    <strong id="trigger">-</strong>
+                    <small>What caused it</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail-card">
+                <div class="detail-header">
+                    <div>💡 <span>Root Cause</span></div>
+                    <span>⌃</span>
+                </div>
+                <div class="detail-content">
+                    <p id="rootCause">
+                        Upload files and click Analyze Crash to see the root cause.
+                    </p>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-header">
+                    <div>☷ <span>Reproduction Steps</span></div>
+                    <span>⌃</span>
+                </div>
+                <div class="detail-content">
+                    <ol id="steps">
+                        <li>Upload APK and crash report</li>
+                        <li>Click Analyze Crash</li>
+                        <li>Analysis steps will appear here</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="validation-card">
+            <div class="validation-title">
+                <div class="shield">✓</div>
+                <div>
+                    <h3>Validation Status</h3>
+                    <p>UI action validation, crash trigger and reproduction path results</p>
+                </div>
+            </div>
+
+            <div class="validation-items">
+                <div class="validation-item">
+                    <div class="validation-icon">◉</div>
+                    <div>
+                        <span>UI Action Validation</span>
+                        <strong id="uiAction">Not Checked</strong>
+                    </div>
+                </div>
+
+                <div class="validation-item">
+                    <div class="validation-icon warning-icon">⚠</div>
+                    <div>
+                        <span>Crash Trigger</span>
+                        <strong id="crashTrigger">Not Checked</strong>
+                    </div>
+                </div>
+
+                <div class="validation-item">
+                    <div class="validation-icon">⚯</div>
+                    <div>
+                        <span>Reproduction Path</span>
+                        <strong id="reproduction">Not Checked</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="detail-card" style="margin-top:28px;padding:24px;">
+        <h2>About CrashAI</h2>
+        <p>
+            CrashAI analyzes Android crash reports, identifies likely root causes,
+            generates reproduction steps and validates UI actions against the
+            captured interface state.
+        </p>
+    </section>
+
+    <section id="help" class="detail-card" style="margin-top:20px;padding:24px;">
+        <h2>Help</h2>
+        <p>
+            Upload a valid Android APK and its matching crash report.
+            Analysis and UI-state capture require a connected Android emulator or device.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <span>CrashAI</span>
+    <span>•</span>
+    <span>Symbolic Validation</span>
+    <span>•</span>
+    <span>Reliable Android Crash Reproduction</span>
+</footer>
+
+<script>
+const form = document.getElementById("uploadForm");
+const apkInput = document.getElementById("apk");
+const reportInput = document.getElementById("crash_report");
+
+apkInput.addEventListener("change", function () {
+    if (this.files.length > 0) {
+        document.getElementById("apkName").textContent = this.files[0].name;
+    }
+});
+
+reportInput.addEventListener("change", function () {
+    if (this.files.length > 0) {
+        document.getElementById("reportName").textContent = this.files[0].name;
+    }
+});
+
+form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const loading = document.getElementById("loading");
+    loading.style.display = "flex";
+
+    try {
+        const response = await fetch("/analyze", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            alert(data.message || "Analysis failed. Check the files and device connection.");
+            return;
+        }
+
+        const result = data.result || {};
+
+        document.getElementById("apkResult").textContent =
+            result.apk || data.apk_info?.package_name || "-";
+        document.getElementById("crashType").textContent = result.crash_type || "-";
+        document.getElementById("reason").textContent = result.reason || "-";
+        document.getElementById("trigger").textContent = result.trigger || "-";
+        document.getElementById("rootCause").textContent = result.root_cause || "-";
+
+        const steps = document.getElementById("steps");
+        steps.replaceChildren();
+
+        if (Array.isArray(result.steps) && result.steps.length > 0) {
+            result.steps.forEach(function (step) {
+                const li = document.createElement("li");
+                li.textContent = typeof step === "string" ? step : JSON.stringify(step);
+                steps.appendChild(li);
+            });
+        } else {
+            const li = document.createElement("li");
+            li.textContent = "No reproduction steps were returned.";
+            steps.appendChild(li);
+        }
+
+        if (data.validation) {
+            document.getElementById("uiAction").textContent =
+                data.validation.overall || "Not Checked";
+
+            document.getElementById("crashTrigger").textContent =
+                (data.validation.passed ?? 0) + " / " +
+                (data.validation.total ?? 0) + " steps passed";
+
+            document.getElementById("reproduction").textContent =
+                data.validation.overall || "Not Checked";
+        }
+
+        document.getElementById("results").classList.add("show");
+        document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+
+    } catch (error) {
+        console.error(error);
+        alert("Unable to analyze the crash. Check the Flask server and Android device connection.");
+    } finally {
+        loading.style.display = "none";
+    }
+});
+</script>
+
+</body>
+</html>

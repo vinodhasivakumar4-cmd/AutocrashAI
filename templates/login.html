@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | AutoCrashAI</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh; display: flex;
+            align-items: center; justify-content: center;
+            font-family: Arial, sans-serif; color: #f1f5f9;
+            background: radial-gradient(circle at top left, #172554, #080d19 55%);
+            padding: 20px;
+        }
+        .card {
+            width: 100%; max-width: 420px; padding: 36px;
+            background: #111827; border: 1px solid #293449;
+            border-radius: 18px; box-shadow: 0 20px 60px #0005;
+        }
+        .logo { font-size: 30px; font-weight: bold; color: #60a5fa; }
+        h1 { margin-bottom: 8px; font-size: 27px; }
+        .sub { color: #9ca3af; margin-bottom: 28px; }
+        label { display: block; margin: 18px 0 8px; font-size: 14px; }
+        input {
+            width: 100%; padding: 13px; border-radius: 9px;
+            border: 1px solid #374151; background: #0b1220;
+            color: white; font-size: 15px;
+        }
+        input:focus { outline: 2px solid #3b82f6; border-color: transparent; }
+        button {
+            width: 100%; margin-top: 24px; padding: 14px;
+            border: 0; border-radius: 9px; background: #2563eb;
+            color: white; font-weight: bold; font-size: 16px; cursor: pointer;
+        }
+        button:hover { background: #1d4ed8; }
+        .bottom { text-align: center; margin-top: 24px; color: #9ca3af; }
+        a { color: #60a5fa; text-decoration: none; }
+        .message { padding: 11px; border-radius: 8px; margin: 12px 0; font-size: 14px; }
+        .error { background: #451a1a; color: #fecaca; }
+        .success { background: #123524; color: #bbf7d0; }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <div class="logo">AutoCrashAI</div>
+        <h1>Welcome back</h1>
+        <p class="sub">Sign in to continue to your crash analysis dashboard.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="email">Email address</label>
+            <input id="email" type="email" name="email"
+                   autocomplete="email" required>
+
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password"
+                   autocomplete="current-password" required>
+
+            <button type="submit">Sign In</button>
+        </form>
+
+        <div class="bottom">
+            Don't have an account? <a href="{{ url_for('register') }}">Create account</a>
+        </div>
+    </main>
+</body>
+</html>
